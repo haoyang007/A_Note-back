@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhhao.note.mapper.UserMapper">
+	<select	id="selectByEmail" resultType="com.hhhao.note.entity.User">
+	   SELECT * FROM user WHERE email = #{email}
+	</select>
+	<select id="selectCurrentUser" resultType="com.hhhao.note.dto.login.UserInfo">
+	   SELECT id as userId,email,username,image_url as userImage FROM user WHERE email = #{email}
+	</select>
+</mapper>

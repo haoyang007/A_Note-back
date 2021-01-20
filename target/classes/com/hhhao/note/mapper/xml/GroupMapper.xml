@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhhao.note.mapper.GroupMapper">
+    <select id="getMemberDetails" resultType="com.hhhao.note.dto.group.MemberDetail">
+        SELECT u.id as memberId,email,username,u.image_url as userImage,
+               CASE WHEN g_u.clock_time &gt; #{startTime} and g_u.clock_time &lt; #{endtime}
+                    THEN 1 ELSE 0 END as clockStatus,
+               CASE WHEN u.id = g.leader_id THEN 2 
+                    WHEN u.id = g_m.manager_id THEN 1
+                    ELSE 0 END as post
+        FROM group_user g_u
+        LEFT JOIN user u ON g_u.user_id = u.id
+        LEFT JOIN group g ON g_u.group_id = g.id
+        LEFT JOIN group_manager g_m ON g.id = g_m.group_id
+        WHERE g_u.group_id = #{groupId}
+    </select> 
+    
+    <select id="getGroupInfo" resultType="com.hhhao.note.dto.group.GroupInfoDto">
+        SELECT id as groupId,name as groupName,image_url as groupImage
+        FROM group
+        <where>
+            <if test="groupId!=null">
+                AND id = #{groupId}
+            </if>
+            <if test="groupName!=null and groupName!=''">
+                AND name = #{groupName}
+            </if>
+        </where>
+    </select>
+</mapper>

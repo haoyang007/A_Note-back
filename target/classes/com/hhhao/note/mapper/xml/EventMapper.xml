@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhhao.note.mapper.EventMapper">
+    <select id="getEventsInfo" resultType="com.hhhao.note.dto.event.EventInfoDto">
+        SELECT e.id as eventId,title,content,e.time,
+               CASE WHEN r.type = 1 THEN GROUP_CONCAT(DISTINCT r.url SEPARATOR ',') ELSE null END as imageStr,
+               CASE WHEN r.type = 2 THEN GROUP_CONCAT(DISTINCT r.url SEPARATOR ',') ELSE null END as recordStr 
+        FROM event e
+        LEFT JOIN user u ON e.user_id = u.id
+        LEFT JOIN user_resource r ON r.event_id = e.id
+        WHERE u.id = #{userId} 
+    </select>
+</mapper>

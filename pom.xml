@@ -1,0 +1,119 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.hhhao.note</groupId>
+  <artifactId>A_Note</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.3.1.RELEASE</version>
+  </parent>
+  
+  <packaging>jar</packaging>
+  
+  <properties>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <dependencies>
+  	<!-- web依赖 -->
+  	<dependency>
+  	  <groupId>org.springframework.boot</groupId>
+  	  <artifactId>spring-boot-starter-web</artifactId>
+  	</dependency>
+  	<!-- 模板引擎依赖 -->
+  	<dependency>
+  	  <groupId>org.springframework.boot</groupId>
+  	  <artifactId>spring-boot-starter-thymeleaf</artifactId>
+  	</dependency>
+  	<!-- mybatis plus依赖 -->
+  	<dependency>
+  	  <groupId>com.baomidou</groupId>
+  	  <artifactId>mybatis-plus-boot-starter</artifactId>
+  	  <version>3.2.0</version>
+  	</dependency>
+  	<!-- lombok依赖（其中的@Data可以帮助生成getters和setters） -->
+	<dependency>
+	  <groupId>org.projectlombok</groupId>
+	  <artifactId>lombok</artifactId>
+	  <scope>provide</scope>
+	</dependency>
+	<!-- 数据库依赖（mysql） -->
+	<dependency>
+	  <groupId>mysql</groupId>
+	  <artifactId>mysql-connector-java</artifactId>
+	  <scope>runtime</scope>
+	</dependency>
+	<!-- spring-security（安全策略）依赖 -->
+	<!-- 
+	<dependency>
+	  <groupId>org.springframework.boot</groupId>
+	  <artifactId>spring-boot-starter-security</artifactId>
+	</dependency>	
+	 -->
+
+	<!-- swagger相关依赖，通过http://ip:port/swagger-ui.html可以查看swagger文档  -->
+	<dependency>
+	  <groupId>io.springfox</groupId>
+	  <artifactId>springfox-swagger2</artifactId>
+	  <version>2.9.2</version>
+	</dependency>
+	<dependency>
+	  <groupId>io.springfox</groupId>
+	  <artifactId>springfox-swagger-ui</artifactId>
+	  <version>2.9.2</version>
+	</dependency>
+	<!-- jwt依赖，jwt即JSON Web Token -->
+	<dependency>
+	  <groupId>com.auth0</groupId>
+	  <artifactId>java-jwt</artifactId>
+	  <version>3.10.0</version>
+	</dependency>
+	<!-- fastjson依赖（处理json字符串） -->
+	<dependency>
+	  <groupId>com.alibaba</groupId>
+	  <artifactId>fastjson</artifactId>
+	  <version>1.2.70</version>
+	</dependency>
+	<!-- quartz依赖（定时任务） -->
+	<!-- 
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-quartz</artifactId>
+    </dependency>	
+	 -->
+
+
+  </dependencies>
+  <build>
+    <plugins>
+  	  <plugin>
+  	    <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+  	  </plugin>
+      <!--
+  	  <plugin>
+  	    <groupId>org.apache.maven.plugins</groupId>
+  	    <artifactId>maven-war-plugin</artifactId>
+  	  </plugin>
+  	  -->
+    </plugins>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+  
+  
+</project>
