@@ -16,7 +16,9 @@ import com.hhhao.note.dto.group.GroupMemberDto;
 import com.hhhao.note.dto.group.MemberDetail;
 import com.hhhao.note.dto.login.UserInfo;
 import com.hhhao.note.entity.Group;
+import com.hhhao.note.entity.GroupManager;
 import com.hhhao.note.entity.GroupUser;
+import com.hhhao.note.mapper.GroupManagerMapper;
 import com.hhhao.note.mapper.GroupMapper;
 import com.hhhao.note.mapper.GroupUserMapper;
 import com.hhhao.note.service.GroupService;
@@ -31,9 +33,11 @@ import com.hhhao.note.util.enums.RespondEnum;
 @Service
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements GroupService {
     @Autowired
-    GroupMapper groupMapper;
+    private GroupMapper groupMapper;
     @Autowired
-    GroupUserMapper groupUserMapper;
+    private GroupUserMapper groupUserMapper;
+    @Autowired
+    private GroupManagerMapper groupManagerMapper;
 
     @Override
     public Result<String> createGroup(CreateGroupDto groupInfo, UserInfo userInfo) {
@@ -50,6 +54,10 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         group.setImageUrl(groupImage);
         group.setLeaderId(userInfo.getId());
         groupMapper.insert(group);
+        GroupManager manager = new GroupManager();
+        manager.setGroupId(group.getId());
+        manager.setManagerId(userInfo.getId());
+        groupManagerMapper.insert(manager);
         return Result.ok();
     }
 

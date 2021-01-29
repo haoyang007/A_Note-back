@@ -10,7 +10,7 @@
                 AND f.friend_id = #{friendId}
             </if>
         </where>
-        UNION ALL
+        UNION
         SELECT email,username,u.image_url as userImage
         FROM friend f
         LEFT JOIN user u ON u.id = f.friend_id
@@ -19,6 +19,5 @@
                 AND f.user_id = #{friendId}
             </if>
         </where>
-        GROUP BY email
     </select>
 </mapper>

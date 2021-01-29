@@ -36,15 +36,9 @@ public class UserController {
         if (userUpdate == null) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "用户信息不能为空");
         }
-        String username = userUpdate.getUsername();
         User user = User.instance();
-        if (username != null) {
-            user.setUsername(username);
-        }
-        String imageUrl = userUpdate.getImageUrl();
-        if (imageUrl != null) {
-            user.setImageUrl(imageUrl);
-        }
+        user.setUsername(userUpdate.getUsername());
+        user.setPassword(userUpdate.getPassword());
         user.setId(userInfo.getId());
         userMapper.updateById(user);
         return Result.ok();

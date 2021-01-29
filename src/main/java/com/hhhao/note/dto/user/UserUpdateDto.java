@@ -16,6 +16,6 @@ public class UserUpdateDto {
     @ApiModelProperty("用户名(昵称)")
     private String username;
 
-    @ApiModelProperty("用户头像")
-    private String imageUrl;
+    @ApiModelProperty("用户密码")
+    private String password;
 }
