@@ -14,7 +14,7 @@ import com.hhhao.note.annotation.CurrentUser;
 import com.hhhao.note.dto.Result;
 import com.hhhao.note.dto.event.EventInfoDto;
 import com.hhhao.note.dto.login.UserInfo;
-import com.hhhao.note.service.EventService;
+import com.hhhao.note.service.NotesEventService;
 import com.hhhao.note.util.enums.RespondEnum;
 
 import io.swagger.annotations.ApiImplicitParam;
@@ -31,7 +31,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/api/event")
 public class EventController {
     @Autowired
-    EventService eventService;
+    NotesEventService eventService;
 
     @ApiOperation(value = "获取当前用户的事件列表", httpMethod = "GET")
     @GetMapping("/get")

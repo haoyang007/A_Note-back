@@ -11,7 +11,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.hhhao.note.entity.User;
+import com.hhhao.note.entity.NotesUser;
 
 /**
  * JWT管理
@@ -37,7 +37,7 @@ public class JwtUtils {
      * @param user 登录用户
      * @return 创建好的jwt字符串
      */
-    public String generateJwt(User user) {
+    public String generateJwt(NotesUser user) {
         Date expiryDate = new Date(System.currentTimeMillis() + expiry);
         return JWT.create().withClaim(PAYLOAD_EMAIL, user.getEmail()).withExpiresAt(expiryDate)
                 .sign(Algorithm.HMAC256(password));

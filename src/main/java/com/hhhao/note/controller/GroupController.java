@@ -17,7 +17,7 @@ import com.hhhao.note.dto.group.GroupDto;
 import com.hhhao.note.dto.group.GroupInfoDto;
 import com.hhhao.note.dto.group.GroupMemberDto;
 import com.hhhao.note.dto.login.UserInfo;
-import com.hhhao.note.service.GroupService;
+import com.hhhao.note.service.NotesGroupService;
 import com.hhhao.note.util.enums.RespondEnum;
 
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,7 +34,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/api/group")
 public class GroupController {
     @Autowired
-    GroupService groupService;
+    NotesGroupService groupService;
 
     @ApiOperation(value = "创建群组", httpMethod = "POST")
     @PostMapping("/create")

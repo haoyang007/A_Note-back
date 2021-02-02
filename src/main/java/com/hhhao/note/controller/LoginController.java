@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hhhao.note.dto.Result;
 import com.hhhao.note.dto.login.LoginParameter;
-import com.hhhao.note.service.LoginService;
+import com.hhhao.note.service.NotesLoginService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api")
 public class LoginController {
     @Autowired
-    LoginService loginService;
+    NotesLoginService loginService;
 
     @ApiOperation(value = "通过邮箱密码登录，返回用户信息或错误信息", httpMethod = "POST")
     @PostMapping("/login")

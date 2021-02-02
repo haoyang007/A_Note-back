@@ -13,7 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.auth0.jwt.interfaces.Claim;
 import com.hhhao.note.dto.login.UserInfo;
 import com.hhhao.note.exception.CustomizeException;
-import com.hhhao.note.mapper.UserMapper;
+import com.hhhao.note.mapper.NotesUserMapper;
 import com.hhhao.note.util.FieldCode;
 import com.hhhao.note.util.JwtUtils;
 import com.hhhao.note.util.enums.RespondEnum;
@@ -27,10 +27,10 @@ import com.hhhao.note.util.enums.RespondEnum;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
     @Autowired
-    JwtUtils jwtUtils;
+    private JwtUtils jwtUtils;
 
     @Autowired
-    UserMapper userMapper;
+    private NotesUserMapper userMapper;
 
     /**
      * 进入controller之前拦截

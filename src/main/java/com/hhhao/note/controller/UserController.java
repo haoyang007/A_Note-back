@@ -10,8 +10,8 @@ import com.hhhao.note.annotation.CurrentUser;
 import com.hhhao.note.dto.Result;
 import com.hhhao.note.dto.login.UserInfo;
 import com.hhhao.note.dto.user.UserUpdateDto;
-import com.hhhao.note.entity.User;
-import com.hhhao.note.mapper.UserMapper;
+import com.hhhao.note.entity.NotesUser;
+import com.hhhao.note.mapper.NotesUserMapper;
 import com.hhhao.note.util.enums.RespondEnum;
 
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +27,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/api/user")
 public class UserController {
     @Autowired
-    UserMapper userMapper;
+    NotesUserMapper userMapper;
 
     @ApiOperation(value = "更改用户信息", httpMethod = "POST")
     @PostMapping("/update")
@@ -36,7 +36,7 @@ public class UserController {
         if (userUpdate == null) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "用户信息不能为空");
         }
-        User user = User.instance();
+        NotesUser user = NotesUser.instance();
         user.setUsername(userUpdate.getUsername());
         user.setPassword(userUpdate.getPassword());
         user.setId(userInfo.getId());

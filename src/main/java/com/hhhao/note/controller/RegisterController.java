@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hhhao.note.dto.Result;
 import com.hhhao.note.dto.register.RegisterParameter;
-import com.hhhao.note.service.RegisterService;
+import com.hhhao.note.service.NotesRegisterService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api")
 public class RegisterController {
     @Autowired
-    RegisterService registerService;
+    NotesRegisterService registerService;
 
     @ApiOperation(value = "设置邮箱密码注册账号，返回提示信息（包含错误信息）")
     @PostMapping("/register")

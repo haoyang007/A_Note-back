@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhhao.note.mapper.NotesGroupUserMapper">
+    <select id="getGroupListInfo" resultType="com.hhhao.note.dto.group.GroupInfoDto">
+        SELECT g.id as groupId,g.name as groupName,g.image_url as groupImage
+        FROM notes_group_user g_u
+        LEFT JOIN notes_group g ON g_u.group_id = g.id
+        WHERE g_u.user_id = #{userId}
+    </select>
+    <select id="updateClockTime">
+        UPDATE notes_group_user SET clock_time = #{time} 
+        WHERE group_id = #{groupId} and user_id = #{userId}
+    </select>
+</mapper>

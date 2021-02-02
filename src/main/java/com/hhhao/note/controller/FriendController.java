@@ -17,7 +17,7 @@ import com.hhhao.note.dto.friend.FriendSharedEventDto;
 import com.hhhao.note.dto.friend.SearchParameter;
 import com.hhhao.note.dto.friend.SendEventDto;
 import com.hhhao.note.dto.login.UserInfo;
-import com.hhhao.note.service.FriendService;
+import com.hhhao.note.service.NotesFriendService;
 
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
@@ -32,7 +32,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/api/friend")
 public class FriendController {
     @Autowired
-    FriendService friendService;
+    NotesFriendService friendService;
 
     @ApiOperation(value = "通过用户信息为当前登录用户添加好友", httpMethod = "POST")
     @PostMapping("/save")

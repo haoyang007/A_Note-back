@@ -1,6 +1,6 @@
 package com.hhhao.note.dto.login;
 
-import com.hhhao.note.entity.User;
+import com.hhhao.note.entity.NotesUser;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,7 +29,7 @@ public class UserInfo {
     @ApiModelProperty("用户头像URL")
     private String userImage;
 
-    public UserInfo(User user) {
+    public UserInfo(NotesUser user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.username = user.getUsername();
