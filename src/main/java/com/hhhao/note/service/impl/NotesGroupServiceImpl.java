@@ -55,7 +55,7 @@ public class NotesGroupServiceImpl extends ServiceImpl<NotesGroupMapper, NotesGr
         group.setImageUrl(groupImage);
         group.setLeaderId(userInfo.getId());
         groupMapper.insert(group);
-        NotesGroupUser groupMember = NotesGroupUser.instance();
+        NotesGroupUser groupMember = new NotesGroupUser();
         groupMember.setGroupId(group.getId());
         groupMember.setUserId(userInfo.getId());
         groupUserMapper.insert(groupMember);
@@ -67,7 +67,12 @@ public class NotesGroupServiceImpl extends ServiceImpl<NotesGroupMapper, NotesGr
         if (groupMapper.selectById(groupId) == null) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "群组(id)不存在");
         }
-        groupUserMapper.insert(NotesGroupUser.instance().setGroupId(groupId).setUserId(userInfo.getId()));
+        NotesGroupUser groupUser = new NotesGroupUser();
+        groupUser.setGroupId(groupId).setUserId(userInfo.getId());
+        if (groupUserMapper.selectOne(new QueryWrapper<>(groupUser)) != null) {
+            return Result.error(RespondEnum.BAD_REQUEST.getCode(), "群组成员已存在");
+        }
+        groupUserMapper.insert(groupUser);
         return Result.ok();
     }
 
@@ -76,10 +81,10 @@ public class NotesGroupServiceImpl extends ServiceImpl<NotesGroupMapper, NotesGr
         if (groupMapper.selectById(groupId) == null) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "群组(id)不存在");
         }
-        NotesGroupUser groupUser = NotesGroupUser.instance();
+        NotesGroupUser groupUser = new NotesGroupUser();
         groupUser.setGroupId(groupId);
         groupUser.setUserId(userInfo.getId());
-        if (groupUserMapper.selectList(new QueryWrapper<>(groupUser)) == null) {
+        if (groupUserMapper.selectOne(new QueryWrapper<>(groupUser)) == null) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "当前用户不在指定群组中");
         }
         groupUserMapper.delete(new QueryWrapper<>(groupUser));
@@ -95,10 +100,10 @@ public class NotesGroupServiceImpl extends ServiceImpl<NotesGroupMapper, NotesGr
         if (!userInfo.getId().equals(group.getLeaderId())) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "当前用户不是群主或管理员，无法删除");
         }
-        NotesGroupUser groupUser = NotesGroupUser.instance();
+        NotesGroupUser groupUser = new NotesGroupUser();
         groupUser.setGroupId(groupId);
         groupUser.setUserId(memberId);
-        if (groupUserMapper.selectList(new QueryWrapper<>(groupUser)) == null) {
+        if (groupUserMapper.selectOne(new QueryWrapper<>(groupUser)) == null) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "删除用户不在指定群组中");
         }
         groupUserMapper.delete(new QueryWrapper<>(groupUser));
@@ -128,7 +133,7 @@ public class NotesGroupServiceImpl extends ServiceImpl<NotesGroupMapper, NotesGr
 
     @Override
     public Result<List<GroupInfoDto>> getGroupList(UserInfo userInfo) {
-        NotesGroupUser groupUser = NotesGroupUser.instance();
+        NotesGroupUser groupUser = new NotesGroupUser();
         groupUser.setUserId(userInfo.getId());
         List<GroupInfoDto> groupList = groupUserMapper.getGroupListInfo(userInfo.getId());
         return Result.ok(groupList);
@@ -159,6 +164,30 @@ public class NotesGroupServiceImpl extends ServiceImpl<NotesGroupMapper, NotesGr
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "您没有权限删除该群组");
         }
         groupMapper.deleteById(groupId);
+        NotesGroupUser groupUser = new NotesGroupUser();
+        groupUser.setGroupId(groupId);
+        groupUserMapper.delete(new QueryWrapper<>(groupUser));
+        return Result.ok();
+    }
+
+    @Override
+    public Result<String> memberClock(Integer groupId, UserInfo userInfo, Integer memberId) {
+        NotesGroup group = groupMapper.selectById(groupId);
+        if (group == null) {
+            return Result.error(RespondEnum.BAD_REQUEST.getCode(), "群组(id)不存在");
+        }
+        if (group.getLeaderId() != userInfo.getId()) {
+            return Result.error(RespondEnum.BAD_REQUEST.getCode(), "您没有权限为群成员打卡");
+        }
+        NotesGroupUser clockUser = new NotesGroupUser();
+        clockUser.setGroupId(groupId).setUserId(memberId);
+        NotesGroupUser groupUser = groupUserMapper.selectOne(new QueryWrapper<>(clockUser));
+        if (groupUser == null) {
+            return Result.error(RespondEnum.BAD_REQUEST.getCode(), "群组成员不存在");
+        }
+        groupUser.setClockTime(Calendar.getInstance().getTimeInMillis());
+        groupUserMapper.updateById(groupUser);
+
         return Result.ok();
     }
 }

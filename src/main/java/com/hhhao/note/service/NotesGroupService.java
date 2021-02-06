@@ -46,7 +46,7 @@ public interface NotesGroupService extends IService<NotesGroup> {
      * 删除指定群成员
      * 
      * @author haoy
-     * @param groupId  群组id
+     * @param groupId 群组id
      * @param memberId 群成员id
      * @param userInfo 当前登录用户
      * @return
@@ -96,4 +96,15 @@ public interface NotesGroupService extends IService<NotesGroup> {
      * @return
      */
     Result<String> deleteGroup(Integer groupId, UserInfo userInfo);
+
+    /**
+     * 群组管理员为群组成员打卡
+     * 
+     * @author haoy
+     * @param groupId
+     * @param userInfo
+     * @param memberId
+     * @return
+     */
+    Result<String> memberClock(Integer groupId, UserInfo userInfo, Integer memberId);
 }

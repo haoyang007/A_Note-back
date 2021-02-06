@@ -21,6 +21,7 @@ import com.hhhao.note.service.NotesGroupService;
 import com.hhhao.note.util.enums.RespondEnum;
 
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -66,8 +67,8 @@ public class GroupController {
         return groupService.quitGroup(id, userInfo);
     }
 
-    @ApiOperation(value = "删除群组成员", httpMethod = "POST")
-    @PostMapping("/delete/member")
+    @ApiOperation(value = "删除群组成员", httpMethod = "GET")
+    @GetMapping("/delete/member")
     public Result<String> deleteMember(Integer groupId, Integer memberId, @ApiIgnore @CurrentUser UserInfo userInfo) {
         if (groupId == null) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "群组id不能为空");
@@ -90,7 +91,7 @@ public class GroupController {
 
     @ApiOperation(value = "获取当前登录用户群组列表", httpMethod = "GET")
     @GetMapping("/list")
-    public Result<List<GroupInfoDto>> deleteMember(@ApiIgnore @CurrentUser UserInfo userInfo) {
+    public Result<List<GroupInfoDto>> groupList(@ApiIgnore @CurrentUser UserInfo userInfo) {
         return groupService.getGroupList(userInfo);
     }
 
@@ -121,5 +122,21 @@ public class GroupController {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "群组id不能为空");
         }
         return groupService.deleteGroup(id, userInfo);
+    }
+
+    @ApiOperation(value = "群组管理员为群组成员打卡", httpMethod = "GET")
+    @GetMapping("{groupId}/clock/{memberId}")
+    @ApiImplicitParams({ @ApiImplicitParam(name = "groupId", value = "群组id", dataType = "Integer"),
+            @ApiImplicitParam(name = "memberId", value = "群成员id", dataType = "Integer") })
+
+    public Result<String> memberClock(@PathVariable Integer groupId, @PathVariable Integer memberId,
+            @ApiIgnore @CurrentUser UserInfo userInfo) {
+        if (groupId == null) {
+            return Result.error(RespondEnum.BAD_REQUEST.getCode(), "群组id不能为空");
+        }
+        if (memberId == null) {
+            return Result.error(RespondEnum.BAD_REQUEST.getCode(), "成员id不能为空");
+        }
+        return groupService.memberClock(groupId, userInfo, memberId);
     }
 }

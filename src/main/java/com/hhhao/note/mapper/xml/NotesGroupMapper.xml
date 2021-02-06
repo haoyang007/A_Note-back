@@ -3,7 +3,7 @@
 <mapper namespace="com.hhhao.note.mapper.NotesGroupMapper">
     <select id="getMemberDetails" resultType="com.hhhao.note.dto.group.MemberDetail">
         SELECT u.id as memberId,email,username,u.image_url as userImage,
-               CASE WHEN g_u.clock_time &gt; #{startTime} and g_u.clock_time &lt; #{endtime}
+               CASE WHEN g_u.clock_time &gt; #{startTime} and g_u.clock_time &lt; #{endTime}
                     THEN 1 ELSE 0 END as clockStatus,
                CASE WHEN u.id = g.leader_id THEN 2 
                     WHEN u.id = g_m.manager_id THEN 1
