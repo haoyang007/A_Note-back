@@ -32,4 +32,10 @@ public class FriendSharedEventDto {
 
     @ApiModelProperty("分享时间（毫秒时间戳）")
     private Long sharedTime;
+
+    @ApiModelProperty("是否完成（0-未完成，1-已完成）")
+    private Integer finished;
+
+    @ApiModelProperty("事件备注")
+    private String memo;
 }

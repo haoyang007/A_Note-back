@@ -26,6 +26,12 @@ public class EventInfoDto {
     @ApiModelProperty("事件内容")
     private String content;
 
+    @ApiModelProperty("是否完成（0-未完成，1-已完成）")
+    private Integer finished;
+
+    @ApiModelProperty("事件备注")
+    private String memo;
+
     @ApiModelProperty("事件创建时间(格式为：yyyy-MM-dd HH:mm:ss)")
     private String timeStr;
 

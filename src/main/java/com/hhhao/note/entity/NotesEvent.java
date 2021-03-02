@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -24,7 +23,6 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor(staticName = "instance")
 public class NotesEvent extends Model<NotesEvent> {
     private static final long serialVersionUID = 1L;
 
@@ -44,9 +42,21 @@ public class NotesEvent extends Model<NotesEvent> {
     @ApiModelProperty("事件所属用户id")
     private Integer userId;
 
+    @ApiModelProperty("是否完成（0-未完成，1-已完成）")
+    private Integer finished;
+
+    @ApiModelProperty("事件备注")
+    private String memo;
+
+    public NotesEvent() {
+
+    }
+
     public NotesEvent(EventInfoDto eventInfo) {
         this.id = eventInfo.getEventId();
         this.title = eventInfo.getTitle();
         this.content = eventInfo.getContent();
+        this.finished = eventInfo.getFinished();
+        this.memo = eventInfo.getMemo();
     }
 }

@@ -13,6 +13,9 @@ import lombok.Data;
 @ApiModel(description = "好友相关信息")
 @Data
 public class FriendDto {
+    @ApiModelProperty("好友id")
+    private Integer userId;
+
     @ApiModelProperty("好友邮箱")
     private String email;
 

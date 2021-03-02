@@ -20,6 +20,17 @@ public enum NormalEnum {
     /** 视频类型 */
     VIDEO("resource_type", 3, "用户事件视频资源"),
 
+    /** 其他支出 */
+    OTHER("expense_type", 0, "其他支出"),
+    /** 生活支出 */
+    LIVE("expense_type", 1, "生活支出"),
+    /** 学业支出 */
+    STUDY("expense_type", 2, "学业支出"),
+    /** 娱乐支出 */
+    ENTERTAINMENT("expense_type", 3, "娱乐支出"),
+    /** 交通支出 */
+    TRAFFIC("expense_type", 4, "交通支出"),
+
     ;
     private String type;
     private Integer value;

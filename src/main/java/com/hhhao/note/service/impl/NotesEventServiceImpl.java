@@ -39,26 +39,30 @@ public class NotesEventServiceImpl extends ServiceImpl<NotesEventMapper, NotesEv
     @Override
     public Result<List<EventInfoDto>> getEvents(UserInfo userInfo) {
         List<EventInfoDto> eventList = eventMapper.getEventsInfo(userInfo.getId());
-        eventList.stream().forEach(event -> {
-            String images = event.getImageStr();
-            String records = event.getRecordStr();
-            Calendar calendar = Calendar.getInstance();
-            Date date = new Date();
-            date.setTime(event.getTime());
-            calendar.setTimeInMillis(event.getTime());
-            event.setTimeStr(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
-            event.setImageList(Arrays.asList(images.trim().split(",")));
-            event.setRecordList(Arrays.asList(records.trim().split(",")));
-        });
+        if (eventList != null) {
+            eventList.stream().forEach(event -> {
+                String images = event.getImageStr();
+                String records = event.getRecordStr();
+                Calendar calendar = Calendar.getInstance();
+                Date date = new Date();
+                date.setTime(event.getTime());
+                calendar.setTimeInMillis(event.getTime());
+                event.setTimeStr(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
+                if (images != null) {
+                    event.setImageList(Arrays.asList(images.trim().split(",")));
+                }
+                if (records != null) {
+                    event.setRecordList(Arrays.asList(records.trim().split(",")));
+                }
+            });
+        }
         return Result.ok(eventList);
     }
 
     @Override
     @Transactional(rollbackFor = { Exception.class })
     public Result<String> addEvent(EventInfoDto eventInfo, UserInfo userInfo) {
-        NotesEvent event = NotesEvent.instance();
-        event.setTitle(eventInfo.getTitle());
-        event.setContent(eventInfo.getContent());
+        NotesEvent event = new NotesEvent(eventInfo);
         event.setUserId(userInfo.getId());
         event.setTime(Calendar.getInstance().getTimeInMillis());
         eventMapper.insert(event);
@@ -66,7 +70,7 @@ public class NotesEventServiceImpl extends ServiceImpl<NotesEventMapper, NotesEv
         List<String> imageList = eventInfo.getImageList();
         if (imageList != null) {
             imageList.stream().forEach(url -> {
-                NotesUserResource resource = NotesUserResource.instance();
+                NotesUserResource resource = new NotesUserResource();
                 resource.setType(NormalEnum.IMAGE.getValue());
                 resource.setUrl(url);
                 resource.setEventId(eventId);
@@ -76,7 +80,7 @@ public class NotesEventServiceImpl extends ServiceImpl<NotesEventMapper, NotesEv
         List<String> recordList = eventInfo.getRecordList();
         if (recordList != null) {
             recordList.stream().forEach(url -> {
-                NotesUserResource resource = NotesUserResource.instance();
+                NotesUserResource resource = new NotesUserResource();
                 resource.setType(NormalEnum.RECORD.getValue());
                 resource.setUrl(url);
                 resource.setEventId(eventId);
@@ -97,7 +101,7 @@ public class NotesEventServiceImpl extends ServiceImpl<NotesEventMapper, NotesEv
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "该事件不属于当前用户");
         }
         eventMapper.deleteById(eventId);
-        resourceMapper.delete(new QueryWrapper<>(NotesUserResource.instance().setEventId(eventId)));
+        resourceMapper.delete(new QueryWrapper<>(new NotesUserResource().setEventId(eventId)));
         return Result.ok();
     }
 
@@ -115,11 +119,11 @@ public class NotesEventServiceImpl extends ServiceImpl<NotesEventMapper, NotesEv
         if (event.getUserId() != userInfo.getId()) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "该事件不属于当前用户");
         }
-        eventMapper.deleteById(eventId);
+        resourceMapper.delete(new QueryWrapper<>(new NotesUserResource().setEventId(eventId)));
         List<String> imageList = eventInfo.getImageList();
         if (imageList != null) {
             imageList.stream().forEach(url -> {
-                NotesUserResource resource = NotesUserResource.instance();
+                NotesUserResource resource = new NotesUserResource();
                 resource.setType(NormalEnum.IMAGE.getValue());
                 resource.setUrl(url);
                 resource.setEventId(eventId);
@@ -129,7 +133,7 @@ public class NotesEventServiceImpl extends ServiceImpl<NotesEventMapper, NotesEv
         List<String> recordList = eventInfo.getRecordList();
         if (recordList != null) {
             recordList.stream().forEach(url -> {
-                NotesUserResource resource = NotesUserResource.instance();
+                NotesUserResource resource = new NotesUserResource();
                 resource.setType(NormalEnum.RECORD.getValue());
                 resource.setUrl(url);
                 resource.setEventId(eventId);

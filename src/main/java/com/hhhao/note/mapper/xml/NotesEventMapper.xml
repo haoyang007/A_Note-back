@@ -4,10 +4,12 @@
     <select id="getEventsInfo" resultType="com.hhhao.note.dto.event.EventInfoDto">
         SELECT e.id as eventId,title,content,e.time,
                CASE WHEN r.type = 1 THEN GROUP_CONCAT(DISTINCT r.url SEPARATOR ',') ELSE null END as imageStr,
-               CASE WHEN r.type = 2 THEN GROUP_CONCAT(DISTINCT r.url SEPARATOR ',') ELSE null END as recordStr 
-        FROM event e
+               CASE WHEN r.type = 2 THEN GROUP_CONCAT(DISTINCT r.url SEPARATOR ',') ELSE null END as recordStr,
+               finished,e.memo 
+        FROM notes_event e
         LEFT JOIN notes_user u ON e.user_id = u.id
         LEFT JOIN notes_user_resource r ON r.event_id = e.id
         WHERE u.id = #{userId} 
+        GROUP BY e.id
     </select>
 </mapper>

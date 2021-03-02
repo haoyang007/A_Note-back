@@ -1,5 +1,7 @@
 package com.hhhao.note.entity;
 
+import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -12,32 +14,36 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 用户事件资源信息
+ * 用户账单信息
  * 
  * @author haoy
  *
  */
-@TableName("notes_user_resource")
-@ApiModel(description = "用户事件资源信息")
+
+@TableName("notes_bill")
+@ApiModel(description = "用户账单信息")
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class NotesUserResource extends Model<NotesUserResource> {
+public class NotesBill extends Model<NotesBill> {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("资源主键id")
+    @ApiModelProperty("主键id")
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Long id;
 
-    @ApiModelProperty("资源类型(1--图片,2--音频,3--视频)")
-    private Integer type;
-
-    @ApiModelProperty("资源URL")
-    private String url;
-
-    @ApiModelProperty("所属用户id(不属于任何用户则为null)")
+    @ApiModelProperty("用户id")
     private Integer userId;
 
-    @ApiModelProperty("所属事件id(不属于任何事件则为null)")
-    private Integer eventId;
+    @ApiModelProperty("消费金额")
+    private BigDecimal amount;
+
+    @ApiModelProperty("消费时间")
+    private Long time;
+
+    @ApiModelProperty("消费类型（0-其他支出，1-生活支出，2-学业支出，3-娱乐支出，4-交通支出）")
+    private Integer type;
+
+    @ApiModelProperty("备注")
+    private String memo;
 }

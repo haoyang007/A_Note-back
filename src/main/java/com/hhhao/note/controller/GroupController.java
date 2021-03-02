@@ -82,7 +82,7 @@ public class GroupController {
     @ApiOperation(value = "获取群组成员列表", httpMethod = "GET")
     @GetMapping("/{id}/member")
     @ApiImplicitParam(name = "id", value = "群组id", dataType = "Integer")
-    public Result<GroupMemberDto> deleteMember(@PathVariable Integer id) {
+    public Result<GroupMemberDto> memberList(@PathVariable Integer id) {
         if (id == null) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "群组id不能为空");
         }
