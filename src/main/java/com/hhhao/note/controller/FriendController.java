@@ -66,7 +66,8 @@ public class FriendController {
 
     @ApiOperation(value = "分享事件给好友", httpMethod = "POST")
     @PostMapping("/event/shared")
-    public Result<String> sendEventToFriend(@ApiIgnore @CurrentUser UserInfo userInfo, SendEventDto sendEvent) {
+    public Result<String> sendEventToFriend(@RequestBody SendEventDto sendEvent,
+            @ApiIgnore @CurrentUser UserInfo userInfo) {
         return friendService.sendEventToFriend(userInfo, sendEvent);
     }
 }
