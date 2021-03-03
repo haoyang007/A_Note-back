@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hhhao.note.annotation.CurrentUser;
@@ -18,6 +19,7 @@ import com.hhhao.note.dto.friend.SearchParameter;
 import com.hhhao.note.dto.friend.SendEventDto;
 import com.hhhao.note.dto.login.UserInfo;
 import com.hhhao.note.service.NotesFriendService;
+import com.hhhao.note.util.enums.RespondEnum;
 
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
@@ -69,5 +71,14 @@ public class FriendController {
     public Result<String> sendEventToFriend(@RequestBody SendEventDto sendEvent,
             @ApiIgnore @CurrentUser UserInfo userInfo) {
         return friendService.sendEventToFriend(userInfo, sendEvent);
+    }
+
+    @ApiOperation(value = "删除好友分享的事件", httpMethod = "GET")
+    @GetMapping("/event/delete/shared")
+    public Result<String> deleteSharedEvent(@RequestParam Integer eventId, @ApiIgnore @CurrentUser UserInfo userInfo) {
+        if (eventId == null) {
+            return Result.error(RespondEnum.BAD_REQUEST.getCode(), "事件id不能为空");
+        }
+        return friendService.deleteSharedEvent(eventId, userInfo);
     }
 }

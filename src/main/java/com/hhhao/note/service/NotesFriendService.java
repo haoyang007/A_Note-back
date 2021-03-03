@@ -67,4 +67,6 @@ public interface NotesFriendService extends IService<NotesFriend> {
      * @return
      */
     Result<UserInfo> searchUser(SearchParameter param);
+
+    Result<String> deleteSharedEvent(Integer eventId, UserInfo userInfo);
 }

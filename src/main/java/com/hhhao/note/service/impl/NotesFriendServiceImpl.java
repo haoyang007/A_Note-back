@@ -117,6 +117,11 @@ public class NotesFriendServiceImpl extends ServiceImpl<NotesFriendMapper, Notes
         if (eventId == null) {
             return Result.error(RespondEnum.BAD_REQUEST.getCode(), "被分享的事件id不能为空");
         }
+        QueryWrapper<NotesSharedEvent> query = new QueryWrapper<>();
+        query.setEntity(new NotesSharedEvent().setSharedEventId(eventId).setUserIdTo(toUserId));
+        if (sharedEventMapper.selectOne(query) != null) {
+            return Result.error(RespondEnum.BAD_REQUEST.getCode(), "同一事件不能重复分享");
+        }
         NotesSharedEvent sharedEvent = new NotesSharedEvent();
         sharedEvent.setUserIdFrom(userInfo.getId());
         sharedEvent.setSharedEventId(eventId);
@@ -141,6 +146,18 @@ public class NotesFriendServiceImpl extends ServiceImpl<NotesFriendMapper, Notes
         }
         return Result.ok(new UserInfo(user));
 
+    }
+
+    @Override
+    public Result<String> deleteSharedEvent(Integer eventId, UserInfo userInfo) {
+        QueryWrapper<NotesSharedEvent> query = new QueryWrapper<>();
+        query.setEntity(new NotesSharedEvent().setSharedEventId(eventId).setUserIdTo(userInfo.getId()));
+        NotesSharedEvent sharedEvent = sharedEventMapper.selectOne(query);
+        if (sharedEvent == null) {
+            return Result.error(RespondEnum.BAD_REQUEST.getCode(), "事件（id）未被分享至当前用户");
+        }
+        sharedEventMapper.deleteById(sharedEvent.getId());
+        return Result.ok();
     }
 
 }
